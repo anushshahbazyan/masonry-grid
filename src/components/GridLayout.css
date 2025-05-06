@@ -1,5 +1,4 @@
 .grid-layout {
-    width: 99%;
     display: grid;
     grid-template-columns: repeat(var(--total-columns), 1fr);
     grid-auto-rows: 100px;
