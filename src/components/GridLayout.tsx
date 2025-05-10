@@ -40,7 +40,9 @@ export function GridLayoutErrorBoundary(error: any) {
 }
 
 function ImageDetailWrapper() {
-    return <></>;
+    const { id } = useParams();
+    const photo = id?.split('-')[0] || '0';
+    return <ImageDetail photoId={photo} />;
 }
 
 function GridContent() {
