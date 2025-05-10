@@ -14,38 +14,46 @@ export default function pexelWrapper() {
     return {
         base: async (page: number) => {
             try {
-                return await fetch(`${pexepApiUrls.base}?page=${page}`, options);
+                const response = await fetch(`${pexepApiUrls.base}?page=${page}`, options);
+                if (response.status !== 200) {
+                    throw new Error(response.statusText);
+                }
+                const data = await response.json();
+                return data;
             } catch (error) {
                 console.error(error);
             }
         },
         search: async (query: string, page: number) => {
             try {
-                return await fetch(`${pexepApiUrls.search}?query=${query}&page=${page}`, options);
+                const response = await fetch(`${pexepApiUrls.search}?query=${query}&page=${page}`, options);
+                if (response.status !== 200) {
+                    throw new Error(response.statusText);
+                }
+                const data = await response.json();
+                return data;
             } catch (error) {
                 console.error(error);
             }
         },
         popular: async (page: number) => {
             try {
-                return await fetch(`${pexepApiUrls.popular}?page=${page}`, options);
+                const response = await fetch(`${pexepApiUrls.popular}?page=${page}`, options);
+                if (response.status !== 200) {
+                    throw new Error(response.statusText);
+                }
+                const data = await response.json();
+                return data;
             } catch (error) {
                 console.error(error);
             }
         },
         getPhoto: async (photoId: string) => {
             try {
-                return await fetch(`${pexepApiUrls.photo}/${photoId}`, options);
-            } catch (error) {
-                console.error(error);
-            }
-        },
-        processResponse: async (response: Response) => {
-            try {
+                const response = await fetch(`${pexepApiUrls.photo}/${photoId}`, options);
                 if (response.status !== 200) {
                     throw new Error(response.statusText);
                 }
-            
                 const data = await response.json();
                 return data;
             } catch (error) {

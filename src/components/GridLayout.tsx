@@ -46,7 +46,6 @@ function ImageDetailWrapper() {
 }
 
 function GridContent() {
-    const gridRef = useRef<HTMLDivElement>(null);
     const [isLoading, setLoading] = useState(false);
     const [items, setItems] = useState<Photo[]>([]);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -60,11 +59,10 @@ function GridContent() {
             isLoadingMore.current = true;
             setLoading(true);
             const response = await pexelWrapper().popular(page);
-            if (response) {
-                const processedResponse = await pexelWrapper().processResponse(response);
+            if (response.photos) {
                 setItems(prevItems => {
                     // Filter out any duplicates based on photo ID
-                    const newPhotos = processedResponse.photos.filter(
+                    const newPhotos = response.photos.filter(
                         (newPhoto: Photo) => !prevItems.some(existingPhoto => existingPhoto.id === newPhoto.id)
                     );
                     return [...prevItems, ...newPhotos];
@@ -113,36 +111,10 @@ function GridContent() {
             }
         }, 300);
 
-        const updateTotalColumns = () => {
-            if (gridRef.current) {
-                const containerWidth = gridRef.current.clientWidth;
-                const minColumnWidth = 300; // Minimum width for a column
-                const gap = 25; // Gap between columns
-                
-                // calculate how many columns can fit
-                const availableWidth = containerWidth - gap;
-                const totalColumns = Math.floor(availableWidth / (minColumnWidth + gap));
-                
-                // ensure at least 1 column
-                const columns = Math.max(1, totalColumns);
-                
-                console.log('Grid width:', containerWidth);
-                console.log('Total columns:', columns);
-                
-                gridRef.current.style.setProperty("--total-columns", columns.toString());
-            }
-        };
-
-        // initial calculation
-        updateTotalColumns();
-
-        // update on window resize
-        window.addEventListener('resize', updateTotalColumns);
         // handle scroll loading
         window.addEventListener("scroll", handleScroll);
 
         return () => {
-            window.removeEventListener('resize', updateTotalColumns);
             window.removeEventListener("scroll", handleScroll);
         };
     }, [fetchData]);
@@ -150,7 +122,7 @@ function GridContent() {
     return (
         <div className="App">
             <header className="App-header">Greetings from the Masonry Grid</header>
-            <div className="grid-layout" ref={gridRef}>
+            <div className="grid-layout" role="grid">
                 {items.map((photo: Photo, index: number) => (
                     <Link to={`/${photo.id}`} key={`${photo.id}-${index}`}>
                         <ImageTile photo={photo} imageSrc={photo.src.medium} />

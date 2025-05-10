@@ -15,8 +15,7 @@ export default function ImageDetail({ photoId }: ImageDetailProps) {
         try {
             const response = await pexelWrapper().getPhoto(photoId);
             if (response) {
-                const processedResponse = await pexelWrapper().processResponse(response);
-                setPhoto(processedResponse);
+                setPhoto(response);
             }
         } catch (error) {
             console.error('Error fetching data:', error);
