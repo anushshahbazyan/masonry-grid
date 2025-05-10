@@ -1,7 +1,9 @@
 import { useEffect, useRef } from "react";
+import { ImageTileProps } from '../types';
 import "./ImageTile.css";
 
-export default function ImageTile({ image }: { image: string }) {
+
+export default function ImageTile({ imageSrc, photo }: ImageTileProps) {
     const tileRef = useRef<HTMLDivElement>(null);
     const imgRef = useRef<HTMLImageElement>(null);
     const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
@@ -10,7 +12,8 @@ export default function ImageTile({ image }: { image: string }) {
     useEffect(() => {
         const updateRowSpan = () => {
             if (imgRef.current) {
-                const height = imgRef.current?.getBoundingClientRect().height || 0;
+                const height = imgRef.current.getBoundingClientRect().height;
+                console.log('Window height:', window.innerHeight);
                 console.log('Height:', height);
                 const rowSpan = Math.ceil(height / 300);
                 console.log('Row span:', rowSpan);
@@ -24,9 +27,7 @@ export default function ImageTile({ image }: { image: string }) {
             if (timeoutRef.current) {
                 clearTimeout(timeoutRef.current);
             }
-            timeoutRef.current = setTimeout(() => {
-                updateRowSpan();
-            }, 100); // 100ms delay
+            timeoutRef.current = setTimeout(updateRowSpan, 100);
         };
 
         const resizeObserver = new ResizeObserver(debouncedUpdate);
@@ -41,9 +42,7 @@ export default function ImageTile({ image }: { image: string }) {
             if (imgRef.current.complete) {
                 updateRowSpan();
             } else {
-                imgRef.current.onload = () => {
-                    updateRowSpan();
-                };
+                imgRef.current.onload = updateRowSpan;
             }
         }
 
@@ -57,7 +56,7 @@ export default function ImageTile({ image }: { image: string }) {
 
     return (
         <div className="image-tile" ref={tileRef}>
-            <img ref={imgRef} src={image} alt="" loading="lazy" />
+            <img ref={imgRef} src={imageSrc} alt={photo.alt} loading="lazy" />
         </div>
     );
 }
