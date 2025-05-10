@@ -32,4 +32,11 @@ export interface PexelsResponse {
     photos: Photo[];
     total_results: number;
     next_page?: string;
-} 
+}
+
+export type UseInfiniteScrollOptions = {
+    onLoadMore: () => void;
+    hasMore: boolean;
+    isLoading: boolean;
+    rootMargin?: string;
+};

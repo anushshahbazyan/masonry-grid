@@ -1,9 +1,8 @@
-import "./ImageDetail.css";
-import { MasonryHydrateFallback } from './MasonryHydrateFallback';
+import React, { useCallback, useEffect, useState } from "react";
 import pexelWrapper from "../api/pexelWrapper";
-import { useCallback, useEffect } from "react";
-import { useState } from "react";
 import { Photo } from "../types";
+import { MasonryHydrateFallback } from './MasonryHydrateFallback';
+import "./ImageDetail.css";
 
 interface ImageDetailProps {
     photoId: string;
@@ -41,9 +40,9 @@ export default function ImageDetail({ photoId }: ImageDetailProps) {
             <div className="image-detail">
                 <img src={photo.src.original} alt={photo.alt} loading="lazy" />
                 <div className="image-detail-info">
-                    <h1>{photo.alt}</h1>
-                    <p>Author: {photo.photographer}</p>
-                    <p>Link: <a href={photo.photographer_url} target="_blank" rel="noopener noreferrer">{photo.photographer_url}</a></p>
+                    <h1>{photo.alt || `Photo ${photo.id}`}</h1>
+                    <p>Author: {photo.photographer || ''}</p>
+                    <p>Link: <a href={photo.photographer_url || ''} target="_blank" rel="noopener noreferrer">{photo.photographer_url || ''}</a></p>
                 </div>
             </div>
         </div>

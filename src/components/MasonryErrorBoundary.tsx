@@ -1,20 +1,20 @@
-import { isRouteErrorResponse } from "react-router";
+import React from "react";
+import { ErrorResponse, isRouteErrorResponse } from "react-router";
 import "./MasonryErrorBoundary.css";
 
-export function MasonryErrorBoundary(error: any) {
+export function MasonryErrorBoundary(error: Error | ErrorResponse | unknown) {
     if (isRouteErrorResponse(error)) {
         return (
             <div className="error-container">
-            <h1>Not Found</h1>
-            <p>We couldn't find what you're looking for</p>
+                <h1>Not Found</h1>
             </div>
         );
     }
     if (error instanceof Error) {
         return (
             <div className="error-container">
-            <h1>Error</h1>
-            <p>{error.message}</p>
+                <h1>Error</h1>
+                <p>{error.message}</p>
             </div>
         );
     }

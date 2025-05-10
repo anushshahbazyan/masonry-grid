@@ -1,5 +1,21 @@
+.container {
+    width: 100%;
+    background-color: #fff;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    padding: 16px;
+    background-color: #f8f9fa;
+    margin-bottom: 32px;
+}
+
 .grid-layout {
-    column-count: 4;
+    columns: 300px; /* equal columns insted of using a variable */
     column-gap: 25px;
     padding: 0 25px;
     margin: 0 auto;
@@ -12,30 +28,7 @@
     display: block;
 }
 
-.image-tile img {
-    width: 100%;
-    object-fit: cover;
-    display: block;
-    border-radius: 8px;
-}
-
 .image-tile:hover {
     transform: scale(1.02);
     z-index: 1;
-}
-
-.App {
-    width: 100%;
-    background-color: #fff;
-}
-
-.App-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    padding: 16px;
-    background-color: #f8f9fa;
-    margin-bottom: 32px;
 }
