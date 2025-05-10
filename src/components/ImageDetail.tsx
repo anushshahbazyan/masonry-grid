@@ -1,5 +1,5 @@
 import "./ImageDetail.css";
-import { GridLayoutHydrateFallback } from './GridLayout';
+import { MasonryHydrateFallback } from './MasonryHydrateFallback';
 import pexelWrapper from "../api/pexelWrapper";
 import { useCallback, useEffect } from "react";
 import { useState } from "react";
@@ -27,7 +27,7 @@ export default function ImageDetail({ photoId }: ImageDetailProps) {
     }, [fetchData]);
 
     if (!photo) {
-        return <GridLayoutHydrateFallback />;
+        return <MasonryHydrateFallback />;
     }
 
     return (

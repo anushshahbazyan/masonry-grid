@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import GridLayout from './components/GridLayout';
+import GridLayout from './components/MainLayout';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(

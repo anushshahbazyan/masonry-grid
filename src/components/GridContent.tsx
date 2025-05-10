@@ -1,55 +1,16 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
-import { Link, createHashRouter, isRouteErrorResponse, RouterProvider, useParams } from "react-router";
+import { Link } from "react-router";
+import { Photo } from "../types";
 import ImageTile from "./ImageTile";
-import ImageDetail from "./ImageDetail";
-import pexelWrapper from '../api/pexelWrapper';
-import { Photo } from '../types';
-import "./GridLayout.css";
+import pexelWrapper from "../api/pexelWrapper";
+import { MasonryHydrateFallback } from "./MasonryHydrateFallback";
 
-export function GridLayoutHydrateFallback() {
-  return (
-    <div className="loading-container">
-      <h2>Loading...</h2>
-    </div>
-  );
-}
-
-export function GridLayoutErrorBoundary(error: any) {
-  if (isRouteErrorResponse(error)) {
-    return (
-      <div className="error-container">
-        <h1>Not Found</h1>
-        <p>We couldn't find what you're looking for</p>
-      </div>
-    );
-  }
-  if (error instanceof Error) {
-    return (
-      <div className="error-container">
-        <h1>Error</h1>
-        <p>{error.message}</p>
-      </div>
-    );
-  }
-  return (
-    <div className="error-container">
-      <h1>Error</h1>
-      <p>Something went wrong</p>
-    </div>
-  );
-}
-
-function ImageDetailWrapper() {
-    const { id } = useParams();
-    const photo = id?.split('-')[0] || '0';
-    return <ImageDetail photoId={photo} />;
-}
-
-function GridContent() {
+export default function GridContent() {
     const [isLoading, setLoading] = useState(false);
     const [items, setItems] = useState<Photo[]>([]);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [page, setPage] = useState(1);
+    const [totalResults, setTotalResults] = useState(0);
     const isLoadingMore = useRef(false);
 
     const fetchData = useCallback(async (page: number) => {
@@ -68,6 +29,7 @@ function GridContent() {
                     return [...prevItems, ...newPhotos];
                 });
             }
+            setTotalResults(response.total_results);
         } catch (error) {
             console.error('Error fetching data:', error);
         } finally {
@@ -102,7 +64,7 @@ function GridContent() {
             const bottom =
                 Math.ceil(window.innerHeight + window.scrollY) >=
                 document.documentElement.scrollHeight - 200;
-            if (bottom) {
+            if (bottom && items.length < totalResults) {
                 setPage((prevPage: number) => {
                     const nextPage = prevPage + 1;
                     fetchData(nextPage);
@@ -117,7 +79,7 @@ function GridContent() {
         return () => {
             window.removeEventListener("scroll", handleScroll);
         };
-    }, [fetchData]);
+    }, [fetchData, items.length, totalResults]);
 
     return (
         <div className="App">
@@ -129,26 +91,7 @@ function GridContent() {
                     </Link>
                 ))}
             </div>
-            {isLoading && <div className="loading-indicator">Loading more...</div>}
+            {isLoading && <MasonryHydrateFallback />}
         </div>
-    );
-}
-
-export default function GridLayout() {
-    const router = createHashRouter([
-        {
-            path: "/",
-            element: <GridContent />,
-            errorElement: <GridLayoutErrorBoundary />,
-            hydrateFallbackElement: <GridLayoutHydrateFallback />,
-        },
-        {
-            path: "/:id",
-            element: <ImageDetailWrapper />,
-        },
-    ]);
-
-    return (
-        <RouterProvider router={router} />
     );
 }

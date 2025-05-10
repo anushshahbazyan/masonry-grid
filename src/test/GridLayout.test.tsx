@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import GridLayout from './GridLayout';
+import GridLayout from '../components/MainLayout';
 
 beforeAll(async () => {
   global.TextEncoder = require('util').TextEncoder;
