@@ -21,7 +21,7 @@ beforeAll(() => {
     });
 });
 
-// Mock the pexelWrapper
+// Mock pexelWrapper
 jest.mock("../api/pexelWrapper", () => ({
     __esModule: true,
     default: () => ({

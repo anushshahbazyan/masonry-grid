@@ -12,18 +12,6 @@ export default function pexelWrapper() {
     };
     
     return {
-        base: async (page: number) => {
-            try {
-                const response = await fetch(`${pexepApiUrls.base}?page=${page}`, options);
-                if (response.status !== 200) {
-                    throw new Error(response.statusText);
-                }
-                const data = await response.json();
-                return data;
-            } catch (error) {
-                console.error(error);
-            }
-        },
         search: async (query: string, page: number) => {
             try {
                 const response = await fetch(`${pexepApiUrls.search}?query=${query}&page=${page}`, options);

@@ -1,6 +1,9 @@
 .image-detail-container {
     padding: 32px;
     margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .image-detail-container button {
@@ -13,8 +16,8 @@
     cursor: pointer;
     transition: all 0.3s ease;
     margin-bottom: 24px;
+    align-self: flex-start;
     display: flex;
-    align-items: center;
     gap: 8px;
 }
 

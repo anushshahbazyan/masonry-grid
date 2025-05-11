@@ -12,10 +12,12 @@ export default function GridContent() {
     const [items, setItems] = useState<Photo[]>([]);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [page, setPage] = useState(1);
+    // using this to figure out if the data is going to be loaded
     const [totalResults, setTotalResults] = useState(0);
     const isLoadingMore = useRef(false);
 
     const fetchData = useCallback(async (page: number) => {
+        // if the data is already being loaded, stop
         if (isLoadingMore.current) return;
         try {
             isLoadingMore.current = true;
@@ -47,6 +49,7 @@ export default function GridContent() {
         }
     }, [fetchData, items.length]);
 
+    // this is the custom hook for infinite scroll
     const boundaryRef = useInfiniteScroll({
         onLoadMore: () => {
             setPage(prev => {
